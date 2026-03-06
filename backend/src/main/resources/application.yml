@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: personal-cloud-server
+
+  # Default profile: H2 for local development
+  datasource:
+    url: jdbc:h2:file:./data/clouddb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+# App-specific configuration
+app:
+  jwt:
+    secret: Y2xvdWRzZXJ2ZXItand0LXNlY3JldC1rZXktdGhhdC1pcy1sb25nLWVub3VnaC1mb3ItaHMyNTY=
+    expiration-ms: 86400000  # 24 hours
+  file:
+    upload-dir: ./data/uploads
+
+server:
+  port: 8080
+
+---
+# Production profile (PostgreSQL via Docker)
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:clouddb}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:clouduser}
+    password: ${DB_PASSWORD:cloudpass}
+
+  h2:
+    console:
+      enabled: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:Y2xvdWRzZXJ2ZXItand0LXNlY3JldC1rZXktdGhhdC1pcy1sb25nLWVub3VnaC1mb3ItaHMyNTY=}
+  file:
+    upload-dir: /data/uploads

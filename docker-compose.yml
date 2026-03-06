@@ -1,0 +1,50 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: clouddb
+      POSTGRES_USER: clouduser
+      POSTGRES_PASSWORD: cloudpass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clouduser -d clouddb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Spring Boot Backend
+  backend:
+    build: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: clouddb
+      DB_USERNAME: clouduser
+      DB_PASSWORD: cloudpass
+      JWT_SECRET: ${JWT_SECRET:-Y2xvdWRzZXJ2ZXItand0LXNlY3JldC1rZXktdGhhdC1pcy1sb25nLWVub3VnaC1mb3ItaHMyNTY=}
+    volumes:
+      - uploads:/data/uploads
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  # React Frontend (Nginx)
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  uploads:
