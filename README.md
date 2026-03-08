@@ -1,4 +1,4 @@
-# Personal Cloud Server ☁️
+# Skyvault ☁️
 
 A self-hosted personal cloud for uploading, downloading, and managing your files from anywhere — secured with email/password authentication.
 

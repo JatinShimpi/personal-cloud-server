@@ -24,30 +24,47 @@ public class FileController {
     private final FileStorageService fileStorageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<FileResponse> uploadFile(
+    public ResponseEntity<?> uploadFile(
             @RequestParam("file") MultipartFile file,
+            @RequestParam(required = false) Long folderId,
+            @RequestParam(required = false, defaultValue = "false") boolean isPublic,
+            @RequestParam(required = false, defaultValue = "false") boolean overwrite,
             @AuthenticationPrincipal User user) {
 
         if (file.isEmpty()) {
             throw new RuntimeException("File is empty");
         }
 
-        FileResponse response = fileStorageService.uploadFile(file, user.getId());
-        return ResponseEntity.ok(response);
+        try {
+            FileResponse response = fileStorageService.uploadFile(file, user.getId(), folderId, isPublic, overwrite);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            if ("FILE_EXISTS_CONFLICT".equals(e.getMessage())) {
+                return ResponseEntity.status(409).body(java.util.Map.of(
+                    "error", "File already exists",
+                    "code", "FILE_EXISTS_CONFLICT"
+                ));
+            }
+            throw e;
+        }
     }
 
     @GetMapping
-    public ResponseEntity<List<FileResponse>> listFiles(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(fileStorageService.listFiles(user.getId()));
+    public ResponseEntity<List<FileResponse>> listFiles(
+            @RequestParam(required = false) Long folderId,
+            @RequestParam(required = false, defaultValue = "false") boolean isPublic,
+            @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(fileStorageService.listFiles(user.getId(), folderId, isPublic));
     }
 
     @GetMapping("/{id}/download")
     public ResponseEntity<Resource> downloadFile(
             @PathVariable Long id,
+            @RequestParam(required = false, defaultValue = "false") boolean isPublic,
             @AuthenticationPrincipal User user) {
 
-        FileMetadata metadata = fileStorageService.getFileMetadata(id, user.getId());
-        Resource resource = fileStorageService.downloadFile(id, user.getId());
+        FileMetadata metadata = fileStorageService.getFileMetadata(id, user.getId(), isPublic);
+        Resource resource = fileStorageService.downloadFile(id, user.getId(), isPublic);
 
         String contentType = metadata.getContentType() != null ? metadata.getContentType() : "application/octet-stream";
 
@@ -61,9 +78,10 @@ public class FileController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteFile(
             @PathVariable Long id,
+            @RequestParam(required = false, defaultValue = "false") boolean isPublic,
             @AuthenticationPrincipal User user) {
 
-        fileStorageService.deleteFile(id, user.getId());
+        fileStorageService.deleteFile(id, user.getId(), isPublic);
         return ResponseEntity.ok(Map.of("message", "File deleted successfully"));
     }
 

@@ -36,11 +36,12 @@ export const authAPI = {
 
 // Files API
 export const filesAPI = {
-    list: () => api.get('/files'),
-    upload: (file, onProgress) => {
+    list: (folderId, isPublic) => api.get('/files', { params: { folderId, isPublic } }),
+    upload: (file, folderId, isPublic, overwrite, onProgress) => {
         const formData = new FormData();
         formData.append('file', file);
         return api.post('/files/upload', formData, {
+            params: { folderId, isPublic, overwrite },
             headers: { 'Content-Type': 'multipart/form-data' },
             onUploadProgress: (progressEvent) => {
                 if (onProgress) {
@@ -50,8 +51,9 @@ export const filesAPI = {
             },
         });
     },
-    download: async (id, filename) => {
+    download: async (id, filename, isPublic) => {
         const response = await api.get(`/files/${id}/download`, {
+            params: { isPublic },
             responseType: 'blob',
         });
         // Trigger browser download
@@ -64,8 +66,18 @@ export const filesAPI = {
         link.remove();
         window.URL.revokeObjectURL(url);
     },
-    delete: (id) => api.delete(`/files/${id}`),
+    delete: (id, isPublic) => api.delete(`/files/${id}`, { params: { isPublic } }),
     scan: () => api.post('/files/scan'),
+};
+
+export const foldersAPI = {
+    list: (parentId, isPublic) => api.get('/folders', { params: { parentId, isPublic } }),
+    create: (name, parentId, isPublic) => api.post('/folders', { name, parentId, isPublic }),
+    delete: (id, isPublic) => api.delete(`/folders/${id}`, { params: { isPublic } })
+};
+
+export const systemAPI = {
+    getStorageStats: () => api.get('/system/storage')
 };
 
 export default api;
