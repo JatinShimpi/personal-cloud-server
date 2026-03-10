@@ -57,15 +57,15 @@ def deploy_server(message):
     
     # Run the auto-deploy.sh script explicitly via bash
     try:
-        # Run script in background and wait
-        process = subprocess.Popen(['/bin/bash', 'auto-deploy.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        # Run script in foreground of the terminal so user can see it
+        bot.reply_to(message, "Deployment running. Check your server terminal, you will receive the final Cloudflare link shortly...")
+        process = subprocess.Popen(['/bin/bash', 'auto-deploy.sh'])
         
-        # Wait for the script to finish (the script itself will send the final link via curl)
-        bot.reply_to(message, "Deployment running. You will receive the final Cloudflare link shortly...")
-        stdout, stderr = process.communicate()
+        # Wait for the script to finish
+        process.wait()
         
         if process.returncode != 0:
-            bot.reply_to(message, f"⚠️ Deployment encountered an error:\n{stderr[-500:]}")
+            bot.reply_to(message, "⚠️ Deployment encountered an error. Please check the server terminal for details.")
             
     except Exception as e:
          bot.reply_to(message, f"Failed to run deploy script: {str(e)}")
