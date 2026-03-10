@@ -55,10 +55,10 @@ def deploy_server(message):
     
     bot.reply_to(message, "🛠️ Starting Skyvault deployment sequence...\nPulling from GitHub and starting Docker...")
     
-    # Run the auto-deploy.sh script
+    # Run the auto-deploy.sh script explicitly via bash
     try:
         # Run script in background and wait
-        process = subprocess.Popen(['./auto-deploy.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        process = subprocess.Popen(['/bin/bash', 'auto-deploy.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         
         # Wait for the script to finish (the script itself will send the final link via curl)
         bot.reply_to(message, "Deployment running. You will receive the final Cloudflare link shortly...")
