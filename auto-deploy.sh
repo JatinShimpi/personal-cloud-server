@@ -51,9 +51,13 @@ if [ -z "$CLOUDFLARE_URL" ]; then
     echo "Failed to get Cloudflare URL. Check cloudflare.log"
     # Send failure to Telegram if BOT_TOKEN is set
     if [ ! -z "$BOT_TOKEN" ] && [ ! -z "$CHAT_ID" ]; then
+        LOG_OUTPUT=$(tail -n 15 cloudflare.log | cut -c 1-1000)
         curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
              -d chat_id="${CHAT_ID}" \
-             -d text="⚠️ Skyvault deploy failed to get a Cloudflare URL."
+             -d text="⚠️ Skyvault deploy failed to get a Cloudflare URL. 
+
+Log output:
+$LOG_OUTPUT"
     fi
     exit 1
 fi
