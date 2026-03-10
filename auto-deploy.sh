@@ -3,10 +3,10 @@
 # ====================================================
 # Skyvault Auto-Deploy & Server Startup Script
 # This script is designed to be run manually OR 
-# triggered automatically by the Telegram Bot.
-# ====================================================
-
 # Load environment variables from .env if it exists
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+cd "$(dirname "$0")"
+
 if [ -f .env ]; then
   export $(cat .env | grep -v '^#' | xargs)
 fi

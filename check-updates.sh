@@ -7,6 +7,7 @@
 # ====================================================
 
 # Navigate to project directory (change if necessary)
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 cd "$(dirname "$0")"
 
 # Load environment variables if they exist
@@ -31,8 +32,8 @@ if [ "$LOCAL" != "$REMOTE" ]; then
              -d text="🔄 GitHub Updates detected! Auto-deploying Skyvault..."
     fi
 
-    # Trigger the main deployment script
-    ./auto-deploy.sh
+    # Trigger the main deployment script explicitly with bash
+    /bin/bash ./auto-deploy.sh
 else
     # No updates, do nothing
     echo "$(date): Up to date."
