@@ -2,6 +2,7 @@ import os
 import subprocess
 import time
 from telebot import TeleBot
+from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -20,12 +21,18 @@ bot = TeleBot(BOT_TOKEN)
 def is_authorized(message):
     return str(message.chat.id) == CHAT_ID
 
+def get_keyboard():
+    markup = ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
+    markup.add(KeyboardButton('deploy'), KeyboardButton('status'), KeyboardButton('link'))
+    return markup
+
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     if not is_authorized(message): return
-    bot.reply_to(message, "online. cmds: /deploy /status /link")
+    bot.reply_to(message, "online. (use buttons)", reply_markup=get_keyboard())
 
 @bot.message_handler(commands=['status'])
+@bot.message_handler(func=lambda msg: msg.text == 'status')
 def check_status(message):
     if not is_authorized(message): return
     bot.reply_to(message, "checking status...")
@@ -36,6 +43,7 @@ def check_status(message):
         bot.reply_to(message, f"Failed to check status: {str(e)}")
 
 @bot.message_handler(commands=['link'])
+@bot.message_handler(func=lambda msg: msg.text == 'link')
 def get_link(message):
     if not is_authorized(message): return
     try:
@@ -50,6 +58,7 @@ def get_link(message):
         bot.reply_to(message, f"Error finding link: {str(e)}")
 
 @bot.message_handler(commands=['deploy', 'update'])
+@bot.message_handler(func=lambda msg: msg.text == 'deploy')
 def deploy_server(message):
     if not is_authorized(message): return
     
