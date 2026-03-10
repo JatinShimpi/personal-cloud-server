@@ -45,8 +45,8 @@ nano .env
 ```
 Paste the following (replacing with your actual tokens if needed):
 ```env
-BOT_TOKEN=8691796650:AAFgau0dRiIjgY2TwzCCQ8pipncDGEcNDDw
-CHAT_ID=1249916645
+BOT_TOKEN=YOUR_BOT_TOKEN_FROM_BOTFATHER
+CHAT_ID=YOUR_CHAT_ID_FROM_USERINFOBOT
 ```
 Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`).
 
