@@ -31,12 +31,15 @@ pkill -f "cloudflared tunnel" || true
 # Start the tunnel in the background and pipe output to a log file
 cloudflared tunnel --url http://localhost:80 > cloudflare.log 2>&1 &
 
-# Wait for the tunnel to initialize and generate the URL
-sleep 6
-
-# 4. Extract URL
-echo "--> [4/4] Extracting Live URL..."
-CLOUDFLARE_URL=$(grep -oE "https://[a-zA-Z0-9-]+\.trycloudflare\.com" cloudflare.log | head -1)
+# Wait up to 15 seconds for the tunnel to initialize and generate the URL
+echo "Waiting for URL generation..."
+for i in {1..15}; do
+    CLOUDFLARE_URL=$(grep -oE "https://[a-zA-Z0-9-]+\.trycloudflare\.com" cloudflare.log | head -1)
+    if [ ! -z "$CLOUDFLARE_URL" ]; then
+        break
+    fi
+    sleep 1
+done
 
 if [ -z "$CLOUDFLARE_URL" ]; then
     echo "Failed to get Cloudflare URL. Check cloudflare.log"
