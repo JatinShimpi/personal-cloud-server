@@ -23,18 +23,18 @@ LOCAL=$(git rev-parse HEAD)
 REMOTE=$(git rev-parse origin/main)
 
 if [ "$LOCAL" != "$REMOTE" ]; then
-    echo "$(date): Updates found! Triggering auto-deploy..."
+    echo "$(date): updates found. deploying."
     
     # Send a quick "Update started" message before deploying
     if [ ! -z "$BOT_TOKEN" ] && [ ! -z "$CHAT_ID" ]; then
         curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
              -d chat_id="${CHAT_ID}" \
-             -d text="🔄 GitHub Updates detected! Auto-deploying Skyvault..."
+             -d text="updating..."
     fi
 
     # Trigger the main deployment script explicitly with bash
     /bin/bash ./auto-deploy.sh
 else
     # No updates, do nothing
-    echo "$(date): Up to date."
+    echo "$(date): up to date."
 fi
