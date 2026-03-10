@@ -40,7 +40,7 @@ cloudflared tunnel --url http://localhost:80 > cloudflare.log 2>&1 &
 # Wait up to 15 seconds for the tunnel to initialize and generate the URL
 echo "Waiting for URL generation..."
 for i in {1..15}; do
-    CLOUDFLARE_URL=$(grep -oE "https://[a-zA-Z0-9-]+\.trycloudflare\.com" cloudflare.log | head -1)
+    CLOUDFLARE_URL=$(grep -a -oE "https://[a-zA-Z0-9-]+\.trycloudflare\.com" cloudflare.log | head -1)
     if [ ! -z "$CLOUDFLARE_URL" ]; then
         break
     fi
