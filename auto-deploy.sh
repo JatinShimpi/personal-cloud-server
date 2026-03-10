@@ -6,6 +6,12 @@
 # triggered automatically by the Telegram Bot.
 # ====================================================
 
+# Load environment variables from .env if it exists
+if [ -f .env ]; then
+  export $(cat .env | grep -v '^#' | xargs)
+fi
+
+
 # 1. Update from GitHub
 echo "--> [1/4] Pulling latest changes from GitHub..."
 git fetch origin
