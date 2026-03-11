@@ -28,8 +28,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-container glass-card animate-fade-in-up">
+    <div className="auth-container">
+      <div className="auth-card glass-card animate-fade-in-up">
         <div className="auth-header">
           <div className="auth-logo">
             <Cloud style={{ width: 36, height: 36 }} strokeWidth={1.5} />

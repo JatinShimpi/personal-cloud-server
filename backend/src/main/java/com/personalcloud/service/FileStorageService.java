@@ -69,6 +69,11 @@ public class FileStorageService {
                 throw new RuntimeException("FILE_EXISTS_CONFLICT"); // Handled specially by controller
             }
             
+            long usableSpace = Files.getFileStore(targetLocation.getParent()).getUsableSpace();
+            if (usableSpace < file.getSize()) {
+                throw new RuntimeException("Insufficient storage space on the server.");
+            }
+            
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Could not store file " + originalName, e);

@@ -9,7 +9,7 @@
 }
 
 .form-label {
-  font-family: var(--font-orbitron);
+  font-family: var(--font-exo2);
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-secondary);
@@ -23,7 +23,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
-  font-family: var(--font-orbitron);
+  font-family: var(--font-exo2);
   font-size: 0.95rem;
   transition: all var(--transition-normal);
   outline: none;
@@ -37,4 +37,23 @@
 
 .form-input::placeholder {
   color: var(--border-color);
+}
+
+/* --- Inputs with Icons --- */
+.input-with-icon {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.input-with-icon .form-input {
+  padding-left: 42px;
+  width: 100%;
 }

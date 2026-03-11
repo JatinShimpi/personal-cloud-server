@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  font-family: var(--font-orbitron);
+  font-family: var(--font-exo2);
   background: var(--bg-main);
   color: var(--text-primary);
   line-height: 1.6;
