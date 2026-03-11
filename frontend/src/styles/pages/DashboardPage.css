@@ -1,0 +1,301 @@
+/* ========================================
+   SkyVault — Dashboard Page
+   ======================================== */
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-main);
+}
+
+/* --- Header / Topbar --- */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 10;
+  position: sticky;
+  top: 0;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  color: var(--accent-primary);
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 0 10px rgba(46, 143, 255, 0.5));
+}
+
+.brand-title {
+  font-family: var(--font-orbitron);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-greeting {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* --- Layout --- */
+.dashboard-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* --- Sidebar --- */
+.dashboard-sidebar {
+  width: 250px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.nav-item:hover {
+  background: var(--bg-main);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: var(--bg-card);
+  color: var(--accent-primary);
+  border-color: var(--border-color);
+  box-shadow: inset 4px 0 0 var(--accent-primary);
+}
+
+/* --- Main Content Area --- */
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+  background: var(--bg-main);
+}
+
+/* Background grid effect */
+.dashboard-main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(var(--border-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+  background-size: 100px 100px;
+  opacity: 0.05;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.main-scroll-area {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Stats Area --- */
+.stats-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.stat-icon {
+  color: var(--accent-primary);
+  background: rgba(46, 143, 255, 0.1);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--glow-primary);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-family: var(--font-orbitron);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* --- Content Toolbar --- */
+.content-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-orbitron);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.breadcrumb-path {
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb-path:hover {
+  color: var(--accent-primary);
+  text-shadow: var(--glow-primary);
+}
+
+.breadcrumb-path.active {
+  color: var(--text-primary);
+  pointer-events: none;
+}
+
+.breadcrumb-separator {
+  color: var(--border-color);
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* --- File Grid --- */
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  grid-column: 1 / -1;
+  background: rgba(11, 28, 51, 0.3);
+}
+
+.empty-icon {
+  color: var(--border-color);
+  margin-bottom: 1rem;
+  width: 48px;
+  height: 48px;
+}
+
+/* --- Dropzone overlay --- */
+.dropzone-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 11, 22, 0.9);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 4px dashed var(--accent-primary);
+  box-shadow: inset 0 0 50px rgba(46, 143, 255, 0.2);
+}
+
+.dropzone-overlay .empty-icon {
+  color: var(--accent-primary);
+  filter: drop-shadow(var(--glow-primary));
+  width: 80px;
+  height: 80px;
+}
+
+/* Typography Overrides inside File Cards */
+.file-card h3 {
+  font-family: var(--font-orbitron);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.file-card p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.folder-icon {
+  color: var(--accent-secondary);
+  filter: drop-shadow(var(--glow-primary));
+}
+
+.file-icon {
+  color: var(--text-secondary);
+}

@@ -1,0 +1,42 @@
+/* ========================================
+   SkyVault — Cinematic Dark Variables
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* SkyVault Cinematic Dark Palette */
+  --bg-main: #050B16;
+  --bg-sidebar: #0B1C33;
+  --bg-card: #132A4A;
+  
+  --accent-primary: #2E8FFF;
+  --accent-secondary: #63B3FF;
+  
+  --text-primary: #E6F1FF;
+  --text-secondary: #9BB4D4;
+  
+  --border-color: #1F3A5F;
+
+  /* Status Colors */
+  --success: #a6e3a1;
+  --warning: #f9e2af;
+  --danger: #f38ba8;
+  --info: #89b4fa;
+
+  /* Glow Effects */
+  --glow-primary: 0 0 20px rgba(46, 143, 255, 0.25);
+  --glow-primary-strong: 0 0 30px rgba(46, 143, 255, 0.5);
+
+  /* Geometry & Motion */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-orbitron: 'Orbitron', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
