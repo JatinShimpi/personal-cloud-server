@@ -22,3 +22,4 @@ Thumbs.db
 # Environment
 .env
 *.log
+local_credentials.txt
