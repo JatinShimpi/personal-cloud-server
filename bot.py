@@ -2,6 +2,7 @@ import os
 import subprocess
 import time
 import threading
+import telebot
 from telebot import TeleBot
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 from dotenv import load_dotenv
@@ -25,7 +26,8 @@ def is_authorized(message):
 
 def get_keyboard():
     markup = ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
-    markup.add(KeyboardButton('deploy'), KeyboardButton('status'), KeyboardButton('link'))
+    markup.add(KeyboardButton('deploy'), KeyboardButton('stop'), KeyboardButton('status'))
+    markup.add(KeyboardButton('link'), KeyboardButton('logs'))
     return markup
 
 @bot.message_handler(commands=['start', 'help'])
@@ -58,6 +60,37 @@ def get_link(message):
              bot.reply_to(message, "no link. deploy first.")
     except Exception as e:
         bot.reply_to(message, f"Error finding link: {str(e)}")
+
+@bot.message_handler(commands=['stop'])
+@bot.message_handler(func=lambda msg: msg.text == 'stop')
+def stop_server(message):
+    if not is_authorized(message): return
+    bot.reply_to(message, "stopping server...")
+    try:
+        # Kill Cloudflare tunnel
+        subprocess.run(['pkill', '-f', 'cloudflared tunnel'], capture_output=True)
+        # Stop Docker containers
+        result = subprocess.run(['docker', 'compose', 'down'], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
+        if result.returncode != 0:
+            # Fallback to docker-compose
+            result = subprocess.run(['docker-compose', 'down'], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
+        bot.reply_to(message, "server stopped.")
+    except Exception as e:
+        bot.reply_to(message, f"stop failed: {str(e)}")
+
+@bot.message_handler(commands=['logs'])
+@bot.message_handler(func=lambda msg: msg.text == 'logs')
+def get_logs(message):
+    if not is_authorized(message): return
+    try:
+        result = subprocess.run(['docker', 'compose', 'logs', '--tail', '20'], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
+        output = result.stdout.strip() or result.stderr.strip() or 'no logs.'
+        # Telegram msg limit is 4096 chars
+        if len(output) > 4000:
+            output = output[-4000:]
+        bot.reply_to(message, output)
+    except Exception as e:
+        bot.reply_to(message, f"logs failed: {str(e)}")
 
 def run_deploy(chat_id):
     """Run deployment in background thread so bot stays responsive."""
@@ -94,4 +127,11 @@ def deploy_server(message):
     thread.start()
 
 print("bot started.")
+bot.set_my_commands([
+    telebot.types.BotCommand("deploy", "Deploy/redeploy the server"),
+    telebot.types.BotCommand("stop", "Stop all containers and tunnel"),
+    telebot.types.BotCommand("status", "Check container health"),
+    telebot.types.BotCommand("link", "Get the current live URL"),
+    telebot.types.BotCommand("logs", "View recent container logs"),
+])
 bot.infinity_polling()
