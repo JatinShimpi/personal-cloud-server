@@ -31,7 +31,7 @@ public class FileMetadata {
     @Column(name = "uploaded_at", nullable = false, updatable = false)
     private LocalDateTime uploadedAt;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = true)
     private Long userId;
 
     @Column(name = "folder_id")

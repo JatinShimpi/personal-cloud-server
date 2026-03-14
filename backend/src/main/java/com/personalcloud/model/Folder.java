@@ -22,7 +22,7 @@ public class Folder {
     @Column(name = "parent_id")
     private Long parentId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = true)
     private Long userId;
 
     @Column(name = "physical_path", nullable = false)
