@@ -19,6 +19,13 @@ git reset --hard origin/main
 # If you are on a different branch, change 'main' to your branch name.
 
 # 2. Build and Start Docker Containers
+echo "stopping old containers..."
+if command -v docker-compose &> /dev/null; then
+    docker-compose down --remove-orphans 2>/dev/null
+elif docker compose version &> /dev/null; then
+    docker compose down --remove-orphans 2>/dev/null
+fi
+
 echo "starting docker..."
 if command -v docker-compose &> /dev/null; then
     docker-compose up -d --build
