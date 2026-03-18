@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
@@ -15,14 +15,18 @@ export default function App() {
                 element={user ? <Navigate to="/" replace /> : <LoginPage />}
             />
             <Route
-                path="/register"
-                element={user ? <Navigate to="/" replace /> : <RegisterPage />}
-            />
-            <Route
                 path="/"
                 element={
                     <ProtectedRoute>
                         <DashboardPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin"
+                element={
+                    <ProtectedRoute>
+                        {user?.role === 'ROLE_ADMIN' ? <AdminDashboardPage /> : <Navigate to="/" replace />}
                     </ProtectedRoute>
                 }
             />

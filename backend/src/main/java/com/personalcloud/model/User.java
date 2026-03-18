@@ -25,6 +25,14 @@ public class User {
     @Column(name = "display_name")
     private String displayName;
 
+    @Column(name = "role")
+    @Builder.Default
+    private String role = "ROLE_USER";
+
+    @Column(name = "storage_quota")
+    @Builder.Default
+    private Long storageQuota = 5368709120L; // 5GB default
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

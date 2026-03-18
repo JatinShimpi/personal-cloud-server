@@ -6,10 +6,11 @@ The Personal Cloud Server is a full-stack, responsive web application designed t
 ## Key Features
 - **Secure Authentication:** JWT-based stateless authentication with password hashing (BCrypt).
 - **File Management:** Upload, download, list, and delete files securely.
+- **Folder Management:** Full support for creating, navigating, and managing physical & virtual folder hierarchies.
 - **Drag & Drop Uploads:** Seamless intuitive file uploads with progress tracking.
 - **Server Discovery (Symlinks):** Navigate and discover symlinked folders on the host machine to make existing external drives or folders accessible.
 - **Search & Filtering:** Quickly locate files with real-time text search.
-- **Premium UI:** Designed with a dark theme, glassmorphism, dynamic gradients, and modern micro-animations.
+- **Premium UI:** Designed with a dark theme, glassmorphism, dynamic gradients, modern micro-animations, retro pixel art icons, and enhanced toast notifications (Sonner).
 
 ## Technology Stack
 - **Frontend:** React 18, Vite, Axios, Lucide React (Icons), Vanilla CSS

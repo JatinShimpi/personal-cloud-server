@@ -22,6 +22,6 @@ public class SystemController {
 
     @GetMapping("/storage")
     public ResponseEntity<Map<String, Object>> getStorageStats(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(systemService.getStorageStats(user.getId()));
+        return ResponseEntity.ok(systemService.getStorageStats(user));
     }
 }

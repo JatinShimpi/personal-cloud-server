@@ -30,7 +30,6 @@ api.interceptors.response.use(
 
 // Auth API
 export const authAPI = {
-    register: (data) => api.post('/auth/register', data),
     login: (data) => api.post('/auth/login', data),
 };
 
@@ -78,6 +77,12 @@ export const foldersAPI = {
 
 export const systemAPI = {
     getStorageStats: () => api.get('/system/storage')
+};
+
+export const adminAPI = {
+    getUsers: () => api.get('/admin/users'),
+    createUser: (data) => api.post('/admin/users', data),
+    updateQuota: (id, storageQuota) => api.put(`/admin/users/${id}/quota`, { storageQuota })
 };
 
 export default api;

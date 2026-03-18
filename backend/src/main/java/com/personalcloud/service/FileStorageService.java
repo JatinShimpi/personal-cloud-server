@@ -58,6 +58,20 @@ public class FileStorageService {
                 physicalPath = "private/" + userId + "/" + originalName;
             }
         }
+        
+        // CHECK STORAGE QUOTA
+        if (userId != null) {
+            com.personalcloud.model.User user = com.personalcloud.util.ContextProvider.getBean(com.personalcloud.repository.UserRepository.class).findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            Long quota = user.getStorageQuota();
+            if (quota != null && quota > 0) {
+                Long used = fileMetadataRepository.sumSizeByUserId(userId);
+                if (used == null) used = 0L;
+                if (used + file.getSize() > quota) {
+                    throw new RuntimeException("STORAGE_LIMIT_EXCEEDED");
+                }
+            }
+        }
 
         try {
             Path targetLocation = uploadPath.resolve(physicalPath);
