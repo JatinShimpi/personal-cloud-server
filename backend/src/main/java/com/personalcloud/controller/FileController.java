@@ -26,9 +26,9 @@ public class FileController {
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(
             @RequestParam("file") MultipartFile file,
-            @RequestParam(required = false) Long folderId,
-            @RequestParam(required = false, defaultValue = "false") boolean isPublic,
-            @RequestParam(required = false, defaultValue = "false") boolean overwrite,
+            @RequestParam(value = "folderId", required = false) Long folderId,
+            @RequestParam(value = "isPublic", required = false, defaultValue = "false") boolean isPublic,
+            @RequestParam(value = "overwrite", required = false, defaultValue = "false") boolean overwrite,
             @AuthenticationPrincipal User user) {
 
         if (file.isEmpty()) {
@@ -51,16 +51,16 @@ public class FileController {
 
     @GetMapping
     public ResponseEntity<List<FileResponse>> listFiles(
-            @RequestParam(required = false) Long folderId,
-            @RequestParam(required = false, defaultValue = "false") boolean isPublic,
+            @RequestParam(value = "folderId", required = false) Long folderId,
+            @RequestParam(value = "isPublic", required = false, defaultValue = "false") boolean isPublic,
             @AuthenticationPrincipal User user) {
         return ResponseEntity.ok(fileStorageService.listFiles(user.getId(), folderId, isPublic));
     }
 
     @GetMapping("/{id}/download")
     public ResponseEntity<Resource> downloadFile(
-            @PathVariable Long id,
-            @RequestParam(required = false, defaultValue = "false") boolean isPublic,
+            @PathVariable("id") Long id,
+            @RequestParam(value = "isPublic", required = false, defaultValue = "false") boolean isPublic,
             @AuthenticationPrincipal User user) {
 
         FileMetadata metadata = fileStorageService.getFileMetadata(id, user.getId(), isPublic);
@@ -77,8 +77,8 @@ public class FileController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteFile(
-            @PathVariable Long id,
-            @RequestParam(required = false, defaultValue = "false") boolean isPublic,
+            @PathVariable("id") Long id,
+            @RequestParam(value = "isPublic", required = false, defaultValue = "false") boolean isPublic,
             @AuthenticationPrincipal User user) {
 
         fileStorageService.deleteFile(id, user.getId(), isPublic);

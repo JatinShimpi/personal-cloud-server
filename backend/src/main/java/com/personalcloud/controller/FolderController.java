@@ -31,8 +31,8 @@ public class FolderController {
     @GetMapping
     public ResponseEntity<List<Folder>> listFolders(
             @AuthenticationPrincipal User user,
-            @RequestParam(required = false) Long parentId,
-            @RequestParam(required = false, defaultValue = "false") boolean isPublic) {
+            @RequestParam(value = "parentId", required = false) Long parentId,
+            @RequestParam(value = "isPublic", required = false, defaultValue = "false") boolean isPublic) {
         Long ownerId = isPublic ? null : user.getId();
         List<Folder> folders = folderService.listFolders(parentId, ownerId);
         return ResponseEntity.ok(folders);
@@ -41,8 +41,8 @@ public class FolderController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFolder(
             @AuthenticationPrincipal User user,
-            @PathVariable Long id,
-            @RequestParam(required = false, defaultValue = "false") boolean isPublic) {
+            @PathVariable("id") Long id,
+            @RequestParam(value = "isPublic", required = false, defaultValue = "false") boolean isPublic) {
         Long ownerId = isPublic ? null : user.getId();
         folderService.deleteFolder(id, ownerId);
         return ResponseEntity.noContent().build();

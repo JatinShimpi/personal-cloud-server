@@ -30,6 +30,7 @@ services:
       DB_USERNAME: clouduser
       DB_PASSWORD: cloudpass
       JWT_SECRET: ${JWT_SECRET:-Y2xvdWRzZXJ2ZXItand0LXNlY3JldC1rZXktdGhhdC1pcy1sb25nLWVub3VnaC1mb3ItaHMyNTY=}
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME}
       SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD}
     volumes:
       - uploads:/data/uploads
